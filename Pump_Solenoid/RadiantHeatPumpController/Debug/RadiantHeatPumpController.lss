@@ -1,0 +1,373 @@
+
+RadiantHeatPumpController.elf:     file format elf32-avr
+
+Sections:
+Idx Name          Size      VMA       LMA       File off  Algn
+  0 .text         00000198  00000000  00000000  00000054  2**1
+                  CONTENTS, ALLOC, LOAD, READONLY, CODE
+  1 .comment      00000030  00000000  00000000  000001ec  2**0
+                  CONTENTS, READONLY
+  2 .debug_aranges 00000058  00000000  00000000  0000021c  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  3 .debug_info   00000432  00000000  00000000  00000274  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  4 .debug_abbrev 000001de  00000000  00000000  000006a6  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  5 .debug_line   000001ea  00000000  00000000  00000884  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  6 .debug_frame  000000e0  00000000  00000000  00000a70  2**2
+                  CONTENTS, READONLY, DEBUGGING
+  7 .debug_str    00000353  00000000  00000000  00000b50  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  8 .debug_loc    00000328  00000000  00000000  00000ea3  2**0
+                  CONTENTS, READONLY, DEBUGGING
+  9 .debug_ranges 00000048  00000000  00000000  000011cb  2**0
+                  CONTENTS, READONLY, DEBUGGING
+
+Disassembly of section .text:
+
+00000000 <__vectors>:
+   0:	10 c0       	rjmp	.+32     	; 0x22 <__ctors_end>
+   2:	1f c0       	rjmp	.+62     	; 0x42 <__bad_interrupt>
+   4:	1e c0       	rjmp	.+60     	; 0x42 <__bad_interrupt>
+   6:	1d c0       	rjmp	.+58     	; 0x42 <__bad_interrupt>
+   8:	1c c0       	rjmp	.+56     	; 0x42 <__bad_interrupt>
+   a:	1b c0       	rjmp	.+54     	; 0x42 <__bad_interrupt>
+   c:	1a c0       	rjmp	.+52     	; 0x42 <__bad_interrupt>
+   e:	19 c0       	rjmp	.+50     	; 0x42 <__bad_interrupt>
+  10:	18 c0       	rjmp	.+48     	; 0x42 <__bad_interrupt>
+  12:	17 c0       	rjmp	.+46     	; 0x42 <__bad_interrupt>
+  14:	16 c0       	rjmp	.+44     	; 0x42 <__bad_interrupt>
+  16:	15 c0       	rjmp	.+42     	; 0x42 <__bad_interrupt>
+  18:	14 c0       	rjmp	.+40     	; 0x42 <__bad_interrupt>
+  1a:	13 c0       	rjmp	.+38     	; 0x42 <__bad_interrupt>
+  1c:	12 c0       	rjmp	.+36     	; 0x42 <__bad_interrupt>
+  1e:	11 c0       	rjmp	.+34     	; 0x42 <__bad_interrupt>
+  20:	9b c0       	rjmp	.+310    	; 0x158 <__vector_16>
+
+00000022 <__ctors_end>:
+  22:	11 24       	eor	r1, r1
+  24:	1f be       	out	0x3f, r1	; 63
+  26:	cf e5       	ldi	r28, 0x5F	; 95
+  28:	d1 e0       	ldi	r29, 0x01	; 1
+  2a:	de bf       	out	0x3e, r29	; 62
+  2c:	cd bf       	out	0x3d, r28	; 61
+
+0000002e <__do_clear_bss>:
+  2e:	20 e0       	ldi	r18, 0x00	; 0
+  30:	a0 e6       	ldi	r26, 0x60	; 96
+  32:	b0 e0       	ldi	r27, 0x00	; 0
+  34:	01 c0       	rjmp	.+2      	; 0x38 <.do_clear_bss_start>
+
+00000036 <.do_clear_bss_loop>:
+  36:	1d 92       	st	X+, r1
+
+00000038 <.do_clear_bss_start>:
+  38:	a0 36       	cpi	r26, 0x60	; 96
+  3a:	b2 07       	cpc	r27, r18
+  3c:	e1 f7       	brne	.-8      	; 0x36 <.do_clear_bss_loop>
+  3e:	69 d0       	rcall	.+210    	; 0x112 <main>
+  40:	a9 c0       	rjmp	.+338    	; 0x194 <_exit>
+
+00000042 <__bad_interrupt>:
+  42:	de cf       	rjmp	.-68     	; 0x0 <__vectors>
+
+00000044 <_Z10QuickDelayh>:
+
+static char USI_Incomming_Command = 1;
+
+void QuickDelay(uint8_t delayTime)
+{	
+	for(int i = 0; i < delayTime; i++)
+  44:	90 e0       	ldi	r25, 0x00	; 0
+  46:	18 16       	cp	r1, r24
+  48:	19 06       	cpc	r1, r25
+  4a:	6c f4       	brge	.+26     	; 0x66 <_Z10QuickDelayh+0x22>
+  4c:	20 e0       	ldi	r18, 0x00	; 0
+  4e:	30 e0       	ldi	r19, 0x00	; 0
+	#else
+		//round up by default
+		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+	#endif
+
+	__builtin_avr_delay_cycles(__ticks_dc);
+  50:	e7 e8       	ldi	r30, 0x87	; 135
+  52:	f3 e1       	ldi	r31, 0x13	; 19
+  54:	31 97       	sbiw	r30, 0x01	; 1
+  56:	f1 f7       	brne	.-4      	; 0x54 <_Z10QuickDelayh+0x10>
+  58:	00 c0       	rjmp	.+0      	; 0x5a <_Z10QuickDelayh+0x16>
+  5a:	00 00       	nop
+  5c:	2f 5f       	subi	r18, 0xFF	; 255
+  5e:	3f 4f       	sbci	r19, 0xFF	; 255
+  60:	28 17       	cp	r18, r24
+  62:	39 07       	cpc	r19, r25
+  64:	ac f3       	brlt	.-22     	; 0x50 <_Z10QuickDelayh+0xc>
+  66:	08 95       	ret
+
+00000068 <_Z14SlowPumpRampUpjh>:
+}
+
+
+
+void SlowPumpRampUp(uint16_t rampTime_ms, uint8_t rampUpToSpeed)
+{
+  68:	ef 92       	push	r14
+  6a:	ff 92       	push	r15
+  6c:	0f 93       	push	r16
+  6e:	1f 93       	push	r17
+  70:	cf 93       	push	r28
+  72:	df 93       	push	r29
+  74:	f6 2e       	mov	r15, r22
+	uint8_t startingSpeed = OCR0B;
+  76:	2c b7       	in	r18, 0x3c	; 60
+	uint8_t rampLoopCount = rampUpToSpeed - startingSpeed;
+  78:	06 2f       	mov	r16, r22
+  7a:	02 1b       	sub	r16, r18
+	uint8_t rampLoopTime = rampTime_ms / rampLoopCount;
+  7c:	10 e0       	ldi	r17, 0x00	; 0
+  7e:	b8 01       	movw	r22, r16
+  80:	75 d0       	rcall	.+234    	; 0x16c <__udivmodhi4>
+  82:	e6 2e       	mov	r14, r22
+	
+	for(int i = 0; i < rampLoopCount; i++)
+  84:	10 16       	cp	r1, r16
+  86:	11 06       	cpc	r1, r17
+  88:	74 f4       	brge	.+28     	; 0xa6 <_Z14SlowPumpRampUpjh+0x3e>
+  8a:	c0 e0       	ldi	r28, 0x00	; 0
+  8c:	d0 e0       	ldi	r29, 0x00	; 0
+	{
+		QuickDelay(rampLoopTime);
+  8e:	8e 2d       	mov	r24, r14
+  90:	d9 df       	rcall	.-78     	; 0x44 <_Z10QuickDelayh>
+		if(OCR0B < rampUpToSpeed)
+  92:	9c b7       	in	r25, 0x3c	; 60
+  94:	9f 15       	cp	r25, r15
+  96:	18 f4       	brcc	.+6      	; 0x9e <_Z14SlowPumpRampUpjh+0x36>
+		{
+			OCR0B += 1;
+  98:	8c b7       	in	r24, 0x3c	; 60
+  9a:	8f 5f       	subi	r24, 0xFF	; 255
+  9c:	8c bf       	out	0x3c, r24	; 60
+{
+	uint8_t startingSpeed = OCR0B;
+	uint8_t rampLoopCount = rampUpToSpeed - startingSpeed;
+	uint8_t rampLoopTime = rampTime_ms / rampLoopCount;
+	
+	for(int i = 0; i < rampLoopCount; i++)
+  9e:	21 96       	adiw	r28, 0x01	; 1
+  a0:	c0 17       	cp	r28, r16
+  a2:	d1 07       	cpc	r29, r17
+  a4:	a4 f3       	brlt	.-24     	; 0x8e <_Z14SlowPumpRampUpjh+0x26>
+		if(OCR0B < rampUpToSpeed)
+		{
+			OCR0B += 1;
+		}
+	}	
+}
+  a6:	df 91       	pop	r29
+  a8:	cf 91       	pop	r28
+  aa:	1f 91       	pop	r17
+  ac:	0f 91       	pop	r16
+  ae:	ff 90       	pop	r15
+  b0:	ef 90       	pop	r14
+  b2:	08 95       	ret
+
+000000b4 <_Z16SlowPumpRampDownjh>:
+
+void SlowPumpRampDown(uint16_t rampTime_ms, uint8_t rampDownToSpeed)
+{
+  b4:	ef 92       	push	r14
+  b6:	ff 92       	push	r15
+  b8:	0f 93       	push	r16
+  ba:	1f 93       	push	r17
+  bc:	cf 93       	push	r28
+  be:	df 93       	push	r29
+  c0:	f6 2e       	mov	r15, r22
+	uint8_t startingSpeed = OCR0B;
+  c2:	0c b7       	in	r16, 0x3c	; 60
+	uint8_t rampLoopCount = startingSpeed - rampDownToSpeed;
+  c4:	06 1b       	sub	r16, r22
+	uint8_t rampLoopTime = rampTime_ms / rampLoopCount;
+  c6:	10 e0       	ldi	r17, 0x00	; 0
+  c8:	b8 01       	movw	r22, r16
+  ca:	50 d0       	rcall	.+160    	; 0x16c <__udivmodhi4>
+  cc:	e6 2e       	mov	r14, r22
+	
+	for(int i = 0; i < rampLoopCount; i++)
+  ce:	10 16       	cp	r1, r16
+  d0:	11 06       	cpc	r1, r17
+  d2:	74 f4       	brge	.+28     	; 0xf0 <_Z16SlowPumpRampDownjh+0x3c>
+  d4:	c0 e0       	ldi	r28, 0x00	; 0
+  d6:	d0 e0       	ldi	r29, 0x00	; 0
+	{
+		QuickDelay(rampLoopTime);
+  d8:	8e 2d       	mov	r24, r14
+  da:	b4 df       	rcall	.-152    	; 0x44 <_Z10QuickDelayh>
+		if(OCR0B > rampDownToSpeed)
+  dc:	9c b7       	in	r25, 0x3c	; 60
+  de:	f9 16       	cp	r15, r25
+  e0:	18 f4       	brcc	.+6      	; 0xe8 <_Z16SlowPumpRampDownjh+0x34>
+		{
+			OCR0B -= 1;
+  e2:	8c b7       	in	r24, 0x3c	; 60
+  e4:	81 50       	subi	r24, 0x01	; 1
+  e6:	8c bf       	out	0x3c, r24	; 60
+{
+	uint8_t startingSpeed = OCR0B;
+	uint8_t rampLoopCount = startingSpeed - rampDownToSpeed;
+	uint8_t rampLoopTime = rampTime_ms / rampLoopCount;
+	
+	for(int i = 0; i < rampLoopCount; i++)
+  e8:	21 96       	adiw	r28, 0x01	; 1
+  ea:	c0 17       	cp	r28, r16
+  ec:	d1 07       	cpc	r29, r17
+  ee:	a4 f3       	brlt	.-24     	; 0xd8 <_Z16SlowPumpRampDownjh+0x24>
+		if(OCR0B > rampDownToSpeed)
+		{
+			OCR0B -= 1;
+		}
+	}	
+}
+  f0:	df 91       	pop	r29
+  f2:	cf 91       	pop	r28
+  f4:	1f 91       	pop	r17
+  f6:	0f 91       	pop	r16
+  f8:	ff 90       	pop	r15
+  fa:	ef 90       	pop	r14
+  fc:	08 95       	ret
+
+000000fe <_Z29ConfigurePumpPWM_Timer0_OCR0Bv>:
+	
+}
+
+void ConfigurePumpPWM_Timer0_OCR0B()
+{
+	DDRA |= (1<<7); // PUMP
+  fe:	d7 9a       	sbi	0x1a, 7	; 26
+	TCCR0A |= (1<<COM0B1) | (1<<WGM00);
+ 100:	80 b7       	in	r24, 0x30	; 48
+ 102:	81 62       	ori	r24, 0x21	; 33
+ 104:	80 bf       	out	0x30, r24	; 48
+	TCCR0B |= (1<<CS02) | (1<<CS00);
+ 106:	83 b7       	in	r24, 0x33	; 51
+ 108:	85 60       	ori	r24, 0x05	; 5
+ 10a:	83 bf       	out	0x33, r24	; 51
+	OCR0B = 0;
+ 10c:	1c be       	out	0x3c, r1	; 60
+	PORTA |= (1<<7);
+ 10e:	df 9a       	sbi	0x1b, 7	; 27
+ 110:	08 95       	ret
+
+00000112 <main>:
+}
+
+
+int main(void)
+{
+	DDRB = 0;
+ 112:	17 ba       	out	0x17, r1	; 23
+	DDRA = 0;
+ 114:	1a ba       	out	0x1a, r1	; 26
+	PORTB = 0;
+ 116:	18 ba       	out	0x18, r1	; 24
+	PORTA = 0;
+ 118:	1b ba       	out	0x1b, r1	; 27
+	
+	// Configuring Solenoid as OUTPUT and making sure its off
+	DDRA |= (1<<3);
+ 11a:	d3 9a       	sbi	0x1a, 3	; 26
+	PORTA &= ~(1<<3);
+ 11c:	db 98       	cbi	0x1b, 3	; 27
+	
+
+	//Configure PWM for Pump control output OC0B
+	ConfigurePumpPWM_Timer0_OCR0B();
+ 11e:	ef df       	rcall	.-34     	; 0xfe <_Z29ConfigurePumpPWM_Timer0_OCR0Bv>
+ 120:	2a e2       	ldi	r18, 0x2A	; 42
+ 122:	30 e5       	ldi	r19, 0x50	; 80
+ 124:	8e ef       	ldi	r24, 0xFE	; 254
+ 126:	90 e0       	ldi	r25, 0x00	; 0
+ 128:	21 50       	subi	r18, 0x01	; 1
+ 12a:	30 40       	sbci	r19, 0x00	; 0
+ 12c:	80 40       	sbci	r24, 0x00	; 0
+ 12e:	90 40       	sbci	r25, 0x00	; 0
+ 130:	d9 f7       	brne	.-10     	; 0x128 <main+0x16>
+ 132:	00 00       	nop
+			
+			break;
+			
+		}
+		_delay_ms(5000);		
+		SlowPumpRampUp(5000,PUMP_MaxSpeed);
+ 134:	6e ef       	ldi	r22, 0xFE	; 254
+ 136:	88 e8       	ldi	r24, 0x88	; 136
+ 138:	93 e1       	ldi	r25, 0x13	; 19
+ 13a:	96 df       	rcall	.-212    	; 0x68 <_Z14SlowPumpRampUpjh>
+ 13c:	2f e7       	ldi	r18, 0x7F	; 127
+ 13e:	36 e9       	ldi	r19, 0x96	; 150
+ 140:	88 e9       	ldi	r24, 0x98	; 152
+ 142:	21 50       	subi	r18, 0x01	; 1
+ 144:	30 40       	sbci	r19, 0x00	; 0
+ 146:	80 40       	sbci	r24, 0x00	; 0
+ 148:	e1 f7       	brne	.-8      	; 0x142 <main+0x30>
+ 14a:	00 c0       	rjmp	.+0      	; 0x14c <main+0x3a>
+ 14c:	00 00       	nop
+		_delay_ms(2500);
+		SlowPumpRampDown(5000,PUMP_Off);
+ 14e:	60 e0       	ldi	r22, 0x00	; 0
+ 150:	88 e8       	ldi	r24, 0x88	; 136
+ 152:	93 e1       	ldi	r25, 0x13	; 19
+ 154:	af df       	rcall	.-162    	; 0xb4 <_Z16SlowPumpRampDownjh>
+ 156:	e4 cf       	rjmp	.-56     	; 0x120 <main+0xe>
+
+00000158 <__vector_16>:
+    }
+}
+
+
+ISR(USI_OVF_vect)
+{
+ 158:	1f 92       	push	r1
+ 15a:	0f 92       	push	r0
+ 15c:	0f b6       	in	r0, 0x3f	; 63
+ 15e:	0f 92       	push	r0
+ 160:	11 24       	eor	r1, r1
+	
+}
+ 162:	0f 90       	pop	r0
+ 164:	0f be       	out	0x3f, r0	; 63
+ 166:	0f 90       	pop	r0
+ 168:	1f 90       	pop	r1
+ 16a:	18 95       	reti
+
+0000016c <__udivmodhi4>:
+ 16c:	aa 1b       	sub	r26, r26
+ 16e:	bb 1b       	sub	r27, r27
+ 170:	51 e1       	ldi	r21, 0x11	; 17
+ 172:	07 c0       	rjmp	.+14     	; 0x182 <__udivmodhi4_ep>
+
+00000174 <__udivmodhi4_loop>:
+ 174:	aa 1f       	adc	r26, r26
+ 176:	bb 1f       	adc	r27, r27
+ 178:	a6 17       	cp	r26, r22
+ 17a:	b7 07       	cpc	r27, r23
+ 17c:	10 f0       	brcs	.+4      	; 0x182 <__udivmodhi4_ep>
+ 17e:	a6 1b       	sub	r26, r22
+ 180:	b7 0b       	sbc	r27, r23
+
+00000182 <__udivmodhi4_ep>:
+ 182:	88 1f       	adc	r24, r24
+ 184:	99 1f       	adc	r25, r25
+ 186:	5a 95       	dec	r21
+ 188:	a9 f7       	brne	.-22     	; 0x174 <__udivmodhi4_loop>
+ 18a:	80 95       	com	r24
+ 18c:	90 95       	com	r25
+ 18e:	bc 01       	movw	r22, r24
+ 190:	cd 01       	movw	r24, r26
+ 192:	08 95       	ret
+
+00000194 <_exit>:
+ 194:	f8 94       	cli
+
+00000196 <__stop_program>:
+ 196:	ff cf       	rjmp	.-2      	; 0x196 <__stop_program>
